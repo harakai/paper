@@ -12,6 +12,7 @@
 *.pdf
 
 !実験方法の説明.pdf
+!characteristicTable.pdf
 
 .DS_Store
 
