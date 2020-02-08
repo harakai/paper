@@ -7,9 +7,9 @@
   \vspace{-1zh}
 \section{Modelica言語}\label{modelica}
 Modelica言語とは、微分代数方程式を用いた、複合領域のマルチドメインモデリングのために開発されたオブジェクト指向言語である\cite{modelicaモデルベース本}。
-その言語仕様は、非営利団体のModelica Associationが策定している。
+Modelica言語仕様は、非営利団体のModelica Associationが策定している。
 Modelica Associationでは、Modelica言語による様々な物理領域のモデルライブラリを開発しており、
-数学、機械、電気、熱、流体、制御系、状態遷移機械などを含んだフリーのModelica標準ライブラリ(Modelica Standard Library : MSL)をリリースしている
+数学、機械、電気、熱、流体、制御系、状態遷移機械などを含んだフリーウェアのModelica標準ライブラリ(Modelica Standard Library : MSL)をリリースしている
 \cite{modelicaモデルベース本}。
   \vspace{-1zh}
 \section{OpenModelica}\label{OM}
@@ -26,7 +26,7 @@ OpenModelicaでは、グラフィカルにモデリングすることが可能�
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=12cm]{./Image/name_ob.png}
-	\caption{オブジェクト名の確認のポップアップウィンドウの例}
+	\caption{オブジェクト名を確認するポップアップウィンドウの例}
 	\label{fig:name_ob}
 \end{figure}
 % 本論文では、OpenModelica上でグラフィカルにモデリングしたモデルを「Modelicaモデル」、Modelicaモデルのソースコードを「Modelicaコード」と呼称する。
@@ -41,23 +41,25 @@ OpenModelicaは、シミュレーション結果をグラフとして画面上�
 
 OpenModelicaから出力されるcsvファイルの一部を、図\ref{fig:simyu_csv}に示す。
 
-図\ref{fig:simyu_csv}に示すcsvファイルの1列目には、「0.0秒」から始まる時刻を表すデータが必ず入る。
-そして1行目には、1列目の「time」を除いて、オブジェクト名を含んだ変数名が必ず入る。また以降には、1列目の「time」における各変数の値が2列目以降にそれぞれ入る。
+OpenModelicaから出力されるcsvファイルの1行目の各列には、オブジェクト名が入る。
+1列目には、シミュレーションにおける経過時間を示すデータを格納し、2列目以降には、シミュレーションにおける経過時間ごとの各オブジェクトの値を格納する。
+% 図\ref{fig:simyu_csv}に示すcsvファイルの1列目には、「0.0秒」から始まる時刻を表すデータが必ず入る。
+% そして1行目には、1列目の「time」を除いて、オブジェクト名を含んだ変数名が必ず入る。また以降には、1列目の「time」における各変数の値が2列目以降にそれぞれ入る。
 % また、2行目には、時刻が「0.0秒」の時の各変数の値が必ず入る。
 
 OpenModelicaから出力されるcsvファイルのファイル名は、「(シミュレーションしたモデルの名前)\_res.csv」で生成される。
-例えば、シミュレーションしたモデルの名前が「hoge」だった場合、csvファイルのファイル名は「hoge\_res.csv」となる。
+例えば、シミュレーションに用いたモデルの名前が「hoge」だった場合、csvファイルのファイル名は「hoge\_res.csv」となる。
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=16.5cm,height=10cm]{./Image/simyu_csv.png}
-	\caption{シミュレーション結果のcsvファイルの一部}
+	\caption{シミュレーション結果であるcsvファイルの一部}
 	\label{fig:simyu_csv}
 \end{figure}
 % 試作するモータ特性表自動生成ツールでは、OpenModelica 1.9.1 Beta1を使用する。
 \section{ブラシ付きDCモータ}\label{bDCmotor}
 % ブラシ付きDCモータだけかけばいいのか？モータ全体の話も必要か？
 DCモータとは、磁場の中にあるコイルに電流を流す事で発生するローレンツ力を回転方向に利用することで回すモータである\cite{モータ原理}。
-また、ブラシ付きDCモータとは、モータ内部に「ブラシ」と呼ばれる電極と、「コミュテータ」と呼ばれる整流子を設け、その二つを接触させ機械的に電流の切り替えを行い、回すDCモータである。
+また、ブラシ付きDCモータとは、モータ内部に「ブラシ」と呼ばれる電極と、「コミュテータ」と呼ばれる整流子を設け、その二つを接触させ機械的に電流の切り替えを行うことによって回す、DCモータである。
 ブラシ付きDCモータは、シンプルな構造で、制御が容易で汎用性が高く、模型用モータや自動車補機用モータなど、世界で一番多く使われているモータである\cite{モータ使う}。
 % 3章へ
 %   今回試作するモータ特性表自動生成ツールでは、ブラシ付きモータのシミュレーション結果にのみ対応する。
@@ -68,7 +70,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 	\item ブラシ付きDCモータのModelicaモデルをサブシステムとするモデル
 \end{itemize}
 
-以下にて、それぞれについて説明する。
+以下で、それぞれ説明する。
 % \begin{itemize}
 % 	\item ブラシ付きDCモータのModelicaモデル
 % 	\item ブラシ付きDCモータのModelicaモデルをサブシステムとするモデル
@@ -87,7 +89,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 % 上記6つの部品が必要な理由は、ブラシ付きDCモータの等価回路\cite{等価回路}をModelica言語で表す際に、使用する部品\cite{modelicaシステム本}だからである。\\
 
 また、電源部品、抵抗部品、インダクタ部品、起電力部品、慣性部品には、それぞれ以下のパラメータを設定しなければならない。
-各部品で使用するMSLを表\ref{tab:MSL}に示す。
+各部品で使用するMSLを、表\ref{tab:MSL}に示す。
 \begin{itemize}
 	\item 電源部品 ・・・ 電圧値 $(\mathrm{V})$
 	\item 抵抗部品 ・・・ 抵抗値 ($\Omega$)
@@ -148,7 +150,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 
 \subsection{ブラシ付きDCモータのModelicaモデルをサブシステムとするモデル} \label{sub:submodel}
 ブラシ付きDCモータのModelicaモデルをサブシステムとするモデルとは、
-\ref{sub:tanntai}節で説明したブラシ付きDCモータのModelicaモデルを1つのサブシステムとして扱い、他の部品と合わせたモデルのことである。
+\ref{sub:tanntai}節で説明したブラシ付きDCモータのModelicaモデルを1つのサブシステムとして扱い、他の部品と組み合わせ作成したモデルのことである。
 
 例として、ブラシ付きDCモータのサブシステムを用いたDCサーボモータのモデルを、図\ref{fig:submodel}に
 %図\ref{fig:submodel}のModelicaコードを図\ref{fig:sub_modelica}に、
@@ -175,8 +177,8 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 % \subsubsection{0秒からモータを動かす}
 % 今回試作するモータ特性表自動生成ツールの仕様上、モータに対して0秒から入力を与え、モータを動かすようにしなければならない。
 \section{モータ特性表}\label{mortoku}
-モータ特性表とは、モータを選定する際に、参考にする資料である\cite{仕様の見方}。例えば、図\ref{fig:rei_mortoku}に示すモータ特性表がある。一般的に決まった形式はなく、企業によって掲載する要素は異なるため、
-10社のブラシ付きDCモータのモータ特性表\cite{特性表1,特性表2,特性表3,特性表4,特性表5,特性表6,特性表7,特性表8,特性表9,特性表10}に含まれる要素を集計した。集計結果を表\ref{tab:syuukei}に示す。
+モータ特性表とは、モータを選定する際に、参考にする資料である\cite{仕様の見方}。例えば、図\ref{fig:rei_mortoku}に、示すモータ特性表の例を示す\cite{特性表4}。一般的に決まった形式はなく、企業によって掲載する要素は異なるため、
+10社のブラシ付きDCモータのモータ特性表\cite{特性表1,特性表2,特性表3,特性表4,特性表5,特性表6,特性表7,特性表8,特性表9,特性表10}に含まれる要素を集計した。集計結果を、表\ref{tab:syuukei}に示す。
 表\ref{tab:syuukei}で示した12個の値と4種類のグラフを、今回自動生成するモータ特性表の要素とする。
 % 「無負荷電流」、「無負荷回転数」、「起動トルク」を除く理由は、\ref{sub:mortortoku}節にて述べる。
 % \scalebox{0.8}{
@@ -247,7 +249,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 % 		\end{itemize}
 	\end{itemize}
 \end{itemize}
-以下にて、本研究で対象とするモータ特性表の、特性表と特性グラフの内容について述べる。
+以下で、本研究で対象とするモータ特性表の、特性表と特性グラフの内容について述べる。
 \subsection{特性表}\label{sub:tokuseihyou}
 特性表とは、以下の12個の値で構成する。
 % \begin{itemize}
@@ -299,7 +301,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 % https://www.orientalmotor.co.jp/tech/glossary/ta11/
 \subsubsection{最大効率（Maximum Efficiency）}\label{sub:sub:saidaikouritu}
 % \subsection{最大効率}\label{sub:saidaikouritu}
-効率とは、モータに与える入力エネルギーとモータを回転させるために要した機械エネルギーの比を百分率[\%]で表した値である。そして最大効率とは、効率の最大値を表す値である。入力エネルギーは電流と電圧の積で計算でき、出力エネルギーはモータの回転に加わるトルクと角速度で計算できる。
+最大効率とは、効率の最大値を表す値である。効率とは、モータに与える入力エネルギーとモータを回転させるために要した機械エネルギーの比を百分率[\%]で表した値である。入力エネルギーは電流と電圧の積で計算でき、出力エネルギーはモータの回転に加わるトルクと角速度で計算できる。
 
 単位は、$\mathrm{\%}$である。
 % https://www.jp-igarashi.com/product/product_motors/curve.html
@@ -311,7 +313,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 % http://www.sagamimicro.co.jp/product/aboutusage.html
 \subsubsection{定格回転数（Rated Speed）}\label{sub:sub:teikakukaiten}
 % \subsection{定格回転数}\label{sub:teikakukaiten}
-定格回転数とは、最大効率時の回転数の値を表す。
+定格回転数とは、最大効率時のモータの回転数の値を表す。
 
 単位は、$\mathrm{rpm}$である。
 
@@ -331,7 +333,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 % http://www.nidec-servo.com/jp/digital/pdf/A_technique.pdf
 \subsubsection{最大回転数（Maximum Speed）}\label{sub:sub:saidaikai}
 % \subsection{最大回転数}\label{sub:saidaikai}
-最大回転数とは、回転数値の中で最大値を表す。
+最大回転数とは、回転数の値の中で最大値を表す。
 
 単位は、$\mathrm{rpm}$である。
 \subsection{特性グラフ}\label{sub:tokuseigurahu}
@@ -346,19 +348,19 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 \subsubsection{「トルク $\times$ 電流」グラフ}\label{sub:sub:torden}
 「トルク $\times$ 電流」グラフとは、横軸が「トルク $(\mathrm{mN \cdot m})$」、縦軸が「電流 $(\mathrm{mA})$」のグラフである。
 
-このグラフでは、トルクに対する電流の変化量を表している。
+このグラフでは、トルクに対する電流の変化量を表す。
 \subsubsection{「トルク $\times$ 回転数」グラフ}\label{sub:sub:torkaiten}
 「トルク $\times$ 回転数」グラフとは、横軸が「トルク $(\mathrm{mN \cdot m})$」、縦軸が「回転数 $(\mathrm{rpm})$」のグラフである。
 
-このグラフでは、トルクに対する回転数の変化量を表している。
+このグラフでは、トルクに対する回転数の変化量を表す。
 \subsubsection{「トルク $\times$ 効率」グラフ}\label{sub:sub:torkouritu}
 「トルク $\times$ 効率」グラフとは、横軸が「トルク $(\mathrm{mN \cdot m})$」、縦軸が「効率 $(\mathrm{\%})$」のグラフである。
 
-このグラフでは、トルクに対する効率の変化量を表している。
+このグラフでは、トルクに対する効率の変化量を表す。
 \subsubsection{「トルク $\times$ 出力」グラフ}\label{sub:sub:torsyutu}
 「トルク $\times$ 出力」グラフとは、横軸が「トルク $(\mathrm{mN \cdot m})$」、縦軸が「出力 $(\mathrm{W})$」のグラフである。
 
-このグラフでは、トルクに対する出力の変化量を表している。
+このグラフでは、トルクに対する出力の変化量を表す。
 \section{Python}\label{python}
 Pythonは、1991年にオランダ人のグイド・ヴァンロッサムによって開発され、オープンソースで運営されている動的プログラミング言語である\cite{pythonoya}。
 Pythonの用途は様々で、組込み開発や、Webアプリケーション、デスクトップアプリケーション、さらには人工知能開発、ビッグデータ解析などと多岐に渡る\cite{pythonsamu}。
