@@ -16,7 +16,7 @@ Modelica Associationでは、Modelica言語による様々な物理領域のモ�
 OpenModelicaとは、Open Source Modelica Consortium (OSMC)が開発しているModelicaコードのモデリング、シミュレーション、デバッグのための機能などを
 持つオープンソースプラットフォームである\cite{fritzson2006openmodelica}。
 OpenModelicaでは、グラフィカルにモデリングすることが可能であり、専用のグラフィカルモデルエディタが用意されている。グラフィカルモデルエディタの外観を、図\ref{fig:OM_GUI}に示す。
-また、グラフィカルモデルエディタ上にモデルを配置する際、オブジェクト名の確認をポップアップウィンドウで行う。ポップアップウィンドウの例を、図\ref{fig:name_ob}に示す。
+また、グラフィカルモデルエディタ上にモデルを配置する際、モジュール名の確認をポップアップウィンドウで行う。この操作で、各モデルにモジュール名を付けることができる。ポップアップウィンドウの例を、図\ref{fig:name_ob}に示す。
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=16.5cm,height=10cm]{./Image/OM_GUI.png}
@@ -26,7 +26,7 @@ OpenModelicaでは、グラフィカルにモデリングすることが可能�
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=12cm]{./Image/name_ob.png}
-	\caption{オブジェクト名を確認するポップアップウィンドウの例}
+	\caption{モジュール名を確認するポップアップウィンドウの例}
 	\label{fig:name_ob}
 \end{figure}
 % 本論文では、OpenModelica上でグラフィカルにモデリングしたモデルを「Modelicaモデル」、Modelicaモデルのソースコードを「Modelicaコード」と呼称する。
@@ -41,10 +41,10 @@ OpenModelicaは、シミュレーション結果をグラフとして画面上�
 
 OpenModelicaから出力されるcsvファイルの一部を、図\ref{fig:simyu_csv}に示す。
 
-OpenModelicaから出力されるcsvファイルの1行目の各列には、オブジェクト名が入る。
-1列目には、シミュレーションにおける経過時間を示すデータを格納し、2列目以降には、シミュレーションにおける経過時間ごとの各オブジェクトの値を格納する。
+OpenModelicaから出力されるcsvファイルの1行目の各列には、モジュール名が入る。
+1列目には、シミュレーションにおける経過時間を示すデータを格納し、2列目以降には、シミュレーションにおける経過時間ごとの各モジュールの値を格納する。
 % 図\ref{fig:simyu_csv}に示すcsvファイルの1列目には、「0.0秒」から始まる時刻を表すデータが必ず入る。
-% そして1行目には、1列目の「time」を除いて、オブジェクト名を含んだ変数名が必ず入る。また以降には、1列目の「time」における各変数の値が2列目以降にそれぞれ入る。
+% そして1行目には、1列目の「time」を除いて、モジュール名を含んだ変数名が必ず入る。また以降には、1列目の「time」における各変数の値が2列目以降にそれぞれ入る。
 % また、2行目には、時刻が「0.0秒」の時の各変数の値が必ず入る。
 
 OpenModelicaから出力されるcsvファイルのファイル名は、「(シミュレーションしたモデルの名前)\_res.csv」で生成される。
@@ -64,19 +64,20 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 % 3章へ
 %   今回試作するモータ特性表自動生成ツールでは、ブラシ付きモータのシミュレーション結果にのみ対応する。
 \section{対象とするモデル}\label{taioumodel}
-試作するモータ特性表自動生成ツールでは、以下に示す2つのModelicaモデルのシミュレーション結果を対象とする。
-\begin{itemize}
-	\item ブラシ付きDCモータのModelicaモデル
-	\item ブラシ付きDCモータのModelicaモデルをサブシステムとするモデル
-\end{itemize}
+試作するモータ特性表自動生成ツールでは、%以下に示す2つのModelicaモデル
+ブラシ付きDCモータのModelicaモデルのシミュレーション結果を対象とする。
+% \begin{itemize}
+% 	\item ブラシ付きDCモータのModelicaモデル
+% 	\item ブラシ付きDCモータのModelicaモデルをサブシステムとするモデル
+% \end{itemize}
 
-以下で、それぞれ説明する。
+% 以下で、それぞれ説明する。
 % \begin{itemize}
 % 	\item ブラシ付きDCモータのModelicaモデル
 % 	\item ブラシ付きDCモータのModelicaモデルをサブシステムとするモデル
 % \end{itemize}
 % 以下に上記のモデルについて具体的に説明する。
-\subsection{ブラシ付きDCモータのModelicaモデル}\label{sub:tanntai}
+% \subsection{ブラシ付きDCモータのModelicaモデル}\label{sub:tanntai}
 ブラシ付きDCモータのModelicaモデルとは、ブラシ付きDCモータの等価回路\cite{等価回路}をModelica言語で表したモデルのことである。
 ブラシ付きDCモータの等価回路を、図\ref{fig:touka}に示す。また、ブラシ付きDCモータのModelicaモデルの例を図\ref{fig:tantai_model}に示す。
 \begin{figure}[t]
@@ -134,7 +135,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 % 	\label{fig:hensuu}
 %   \end{figure}
   
-\clearpage
+% \clearpage
 % \begin{figure*}[t]
 % 	\lstinputlisting[label={code:motor}, caption={図\ref{fig:tantai_model}のModelicaコード}]{./chapters/motor.mo}
 % \end{figure*}
@@ -148,20 +149,20 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 
 %   \vspace{-1zh}
 
-\subsection{ブラシ付きDCモータのModelicaモデルをサブシステムとするモデル} \label{sub:submodel}
-ブラシ付きDCモータのModelicaモデルをサブシステムとするモデルとは、
-\ref{sub:tanntai}節で説明したブラシ付きDCモータのModelicaモデルを1つのサブシステムとして扱い、他の部品と組み合わせ作成したモデルのことである。
+% \subsection{ブラシ付きDCモータのModelicaモデルをサブシステムとするモデル} \label{sub:submodel}
+% ブラシ付きDCモータのModelicaモデルをサブシステムとするモデルとは、
+% \ref{sub:tanntai}節で説明したブラシ付きDCモータのModelicaモデルを1つのサブシステムとして扱い、他の部品と組み合わせ作成したモデルのことである。
 
-例として、ブラシ付きDCモータのサブシステムを用いたDCサーボモータのモデルを、図\ref{fig:submodel}に
-%図\ref{fig:submodel}のModelicaコードを図\ref{fig:sub_modelica}に、
-示す。
+% 例として、ブラシ付きDCモータのサブシステムを用いたDCサーボモータのモデルを、図\ref{fig:submodel}に
+% %図\ref{fig:submodel}のModelicaコードを図\ref{fig:sub_modelica}に、
+% 示す。
 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=16.5cm,height=10cm]{./Image/submodel_pack.png}
-	\caption{DCサーボモータのモデル}
-	\label{fig:submodel}
-  \end{figure}
+% \begin{figure}[t]
+% 	\centering
+% 	\includegraphics[width=16.5cm,height=10cm]{./Image/submodel_pack.png}
+% 	\caption{DCサーボモータのモデル}
+% 	\label{fig:submodel}
+%   \end{figure}
 
 %   \begin{figure}[t]
 % 	\centering
@@ -177,9 +178,9 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 % \subsubsection{0秒からモータを動かす}
 % 今回試作するモータ特性表自動生成ツールの仕様上、モータに対して0秒から入力を与え、モータを動かすようにしなければならない。
 \section{モータ特性表}\label{mortoku}
-モータ特性表とは、モータを選定する際に、参考にする資料である\cite{仕様の見方}。例えば、図\ref{fig:rei_mortoku}に、示すモータ特性表の例を示す\cite{特性表4}。一般的に決まった形式はなく、企業によって掲載する要素は異なるため、
+モータ特性表とは、モータを選定する際に、参考にする資料である\cite{仕様の見方}。例えば、図\ref{fig:rei_mortoku}に、示すモータ特性表の例を示す\cite{特性表2}。一般的に決まった形式はなく、企業によって掲載する要素は異なるため、
 10社のブラシ付きDCモータのモータ特性表\cite{特性表1,特性表2,特性表3,特性表4,特性表5,特性表6,特性表7,特性表8,特性表9,特性表10}に含まれる要素を集計した。集計結果を、表\ref{tab:syuukei}に示す。
-表\ref{tab:syuukei}で示した12個の値と4種類のグラフを、今回自動生成するモータ特性表の要素とする。
+表\ref{tab:syuukei}で示した20個の要素の中で、質量、回転方向、電気ノイズ対策、ブラシは、シミュレーション結果から取得することは困難と考え、それ以外の、12個の値と4種類のグラフを、今回自動生成するモータ特性表の要素とする。
 % 「無負荷電流」、「無負荷回転数」、「起動トルク」を除く理由は、\ref{sub:mortortoku}節にて述べる。
 % \scalebox{0.8}{
 	\begin{figure}[t]
@@ -194,16 +195,19 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 	\caption{モータ特性表の要素の集計結果}
 	\begin{tabular}{|c|c||c|c|} \hline
 		要素名 & 出現回数 & 要素名 & 出現回数 \\ \hline\hline
-		定格トルク & 10 & 定格出力 & 5 \\ \hline
-		定格電流 & 9 & 「トルク $\times$ 効率」グラフ & 5 \\ \hline
-		定格回転数 & 9 & 「トルク $\times$ 出力」グラフ & 5 \\ \hline
-		無負荷電流 & 8 & 停動トルク & 4 \\ \hline
-		無負荷回転数 & 8  & 始動電流 & 3 \\ \hline
-		「トルク $\times$ 電流」グラフ & 7 &  最大回転数 & 2 \\ \hline
-		「トルク $\times$ 回転数」グラフ & 7 & 始動トルク & 2\\ \hline
-		定格電圧 & 5 & 最大効率 & 1 \\ \hline
-		
-		
+		定格トルク & 10 &  「トルク $\times$ 出力」グラフ & 5 \\ \hline
+		定格電流 & 9 & 停動トルク & 4\\ \hline
+		定格回転数 & 9 & 始動電流 & 3 \\ \hline
+		無負荷電流 & 8 & 質量 & 3 \\ \hline
+		無負荷回転数 & 8  &最大回転数 & 2\\ \hline
+		「トルク $\times$ 電流」グラフ & 7 &  始動トルク & 2 \\ \hline
+		「トルク $\times$ 回転数」グラフ & 7 & 最大効率 & 1 \\ \hline
+		定格電圧 & 5 & 回転方向 & 1 \\ \hline
+		定格出力 & 5 & 電気ノイズ対策 & 1 \\ \hline
+		「トルク $\times$ 効率」グラフ & 5 & ブラシ & 1 \\ \hline
+
+
+
 	% \begin{tabular}{|c|c||c|c||c|c||c|c|} \hline
 	%   要素名 & 出現回数 &  要素名 & 出現回数 &  要素名 & 出現回数 &  要素名 & 出現回数\\\hline\hline
 	%   定格電流 & 9 &  効率 & 6 & 回転数 & 3 & 容量 & 1 \\ \hline
@@ -274,7 +278,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 始動電流とは、モータを始動する際、回路に流れる電流の最大値を表す。
 
 単位は、$\mathrm{mA}$である。
-% https://www.tsugawa.co.jp/glossary/　
+% https://www.tsugawa.co.jp/glossary/
 
 \subsubsection{無負荷電流（No-Load Current）}
 無負荷電流とは、モータに負荷がかかっていないときの電流値を表す。
@@ -295,7 +299,7 @@ DCモータとは、磁場の中にあるコイルに電流を流す事で発生
 \subsubsection{停動トルク（Stalling Torque）}\label{sub:sub:teidoutoruku}
 % \subsection{停動トルク}\label{sub:teidoutoruku}
 % 停動トルクとは、モータが出しうる最大トルクで、このトルク以上の負荷がかかれば、モータが停止する値を表す。
-停動トルクとは、モータが停止する負荷トルクの値を表す。負荷トルクとは、モータの回転を停止させようとする力のことである。
+停動トルクとは、モータが停止するトルクの値を表す。
 
 単位は、$\mathrm{mN \cdot m}$である。
 % https://www.orientalmotor.co.jp/tech/glossary/ta11/
