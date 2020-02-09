@@ -1,6 +1,6 @@
 \chapter{適用例}\label{cha:Indication}
-% 本章では、本研究で作成したモータ特性表自動生成ツールが正しく動作することを検証するため、以下の同じ能力である2種類のModelicaモデルのシミュレーション結果のcsvファイルを適用する。
-% 本章では、本研究で作成したモータ特性表自動生成ツールが正しく動作することを検証する。
+% 本章では、本研究で生成したモータ特性表自動生成ツールが正しく動作することを検証するため、以下の同じ能力である2種類のModelicaモデルのシミュレーション結果のcsvファイルを適用する。
+% 本章では、本研究で生成したモータ特性表自動生成ツールが正しく動作することを検証する。
 % 適用例として、ブラシ付きDCモータのModelicaモデルと、
 % ブラシ付きDCモータのModelicaモデルをサブシステムとするモデルの2つから出力するcsvファイルを適用例として用いる。
 % また、2つのモータの性能は同じである。
@@ -22,22 +22,21 @@
 % \end{itemize}
 % 具体的には、以下の2つの項目を確認する。
 
-本章では、本研究で作成したモータ特性表自動生成ツールが正しく動作することを検証する。
-適用例として、ブラシ付きDCモータのModelicaモデルに対して出力するcsvファイルに対して、本研究で試作したモータ特性表自動生成ツールを適用する。
+本章では、本研究で生成したモータ特性表自動生成ツールが正しく動作することを検証する。
+適用例として、ブラシ付きDCモータのModelicaモデルをOpenModelicaで実行し、生成されたcsvファイルに対して、本研究で試作したモータ特性表自動生成ツールを適用する。
 % ブラシ付きDCモータのModelicaモデルを図\ref{fig:tekiyou_tanntai}に、OpenModelicaが出力するcsvファイルを図\ref{fig:tekiyou_csv}に、それぞれ示す。
-
-正しく動作しているか確認するために、生成したモータ特性表の各要素の値が、正しい値になっていることを確認する。
+ツールが生成したモータ特性表の各要素の値が、正しい値になっていることを確認する。
 
 
 % \section{ブラシ付きDCモータのModelicaモデル}
-\begin{figure}[t]
+\begin{figure}[p]
 	\centering
 	\includegraphics[width=10cm]{./Image/tekiyou_tanntai.png}
 	\caption{適用するブラシ付きDCモータのModelicaモデル}
 	\label{fig:tekiyou_tanntai}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[p]
 	\centering
 	\fbox{
     \includegraphics[width=13cm]{./Image/tekiyou_csv.png}
@@ -46,9 +45,9 @@
 	\label{fig:tekiyou_csv}
 \end{figure}
 
-ブラシ付きDCモータのModelicaモデルをOpenModelicaで実行し、生成されたcsvファイルを、モータ特性表自動生成ツールに適用する。
+% ブラシ付きDCモータのModelicaモデルをOpenModelicaで実行し、生成されたcsvファイルを、モータ特性表自動生成ツールに適用する。
 適用例に用いるモデルを、図\ref{fig:tekiyou_tanntai}に示す。
-また、図\ref{fig:tekiyou_tanntai}のシミュレーション結果であるcsvファイルを、図\ref{fig:tekiyou_csv}に示す。
+また、図\ref{fig:tekiyou_tanntai}のシミュレーション結果であるcsvファイルの一部を、図\ref{fig:tekiyou_csv}に示す。
 図\ref{fig:tekiyou_csv}のcsvファイルをモータ特性表自動生成ツールに適用した結果、出力するモータ特性表を、図\ref{fig:tekiyou_mortoku}に示す。
 
 % \begin{figure}[t]
@@ -60,7 +59,7 @@
 % 	\label{fig:tekiyou_mortoku}
 % \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[p]
 	\centering
 	\fbox{
 	\includegraphics[width=14cm,pagebox=cropbox]{Image/tekiyou_characteristicTable.pdf} 
@@ -69,21 +68,24 @@
 	\label{fig:tekiyou_mortoku}
 \end{figure}
 
-\begin{figure}[t]
+
+% \clearpage
+
+\section{特性表の確認}
+図\ref{fig:tekiyou_tanntai}のシミュレーション結果であるcsvファイルからモータ特性表を生成する際に使用する要素を、
+図\ref{fig:tekiyou_csv_wakariyasui}に示す。
+なお、図\ref{fig:tekiyou_csv_wakariyasui}のcsvファイルは、図\ref{fig:tekiyou_csv}のcsvファイルの要素から、モータ特性表を生成するために必要な値を抽出および算出したものである。
+図\ref{fig:tekiyou_csv_wakariyasui}において、赤丸は最大値を、青色の四角形は最大効率時の行を、緑色の四角形はモータに負荷がかかっていない時の行を、それぞれ表す。
+
+\begin{figure}[p]
 	\centering
 	\fbox{
     \includegraphics[width=13cm]{./Image/kakunin_saidai_mark.png}
     }
-	\caption{モータ特性表を作成する際に使用する要素}
+	\caption{モータ特性表を生成する際に使用する要素}
 	\label{fig:tekiyou_csv_wakariyasui}
 \end{figure}
 
-\clearpage
-
-\section{特性表の確認}
-図\ref{fig:tekiyou_tanntai}のシミュレーション結果であるcsvファイルからモータ特性表を作成する際に使用する要素を、
-図\ref{fig:tekiyou_csv_wakariyasui}に示す。
-図\ref{fig:tekiyou_csv_wakariyasui}の赤丸は最大値を、青色の四角形は最大効率時の行を、緑色の四角形はモータに負荷がかかっていない時の行を、それぞれ表す。
 
 出力した特性表の各要素が正しく算出できていることを確認した結果を、以下に示す。
 %図\ref{fig:kakunin_csv}には、図\ref{fig:tekiyou_csv}から効率と回転数を算出したデータを示す。図中の赤丸は最大値を、青い四角形は最大効率時の行を表す。
@@ -97,68 +99,68 @@
 % \end{figure}
 
 \subsubsection{定格電圧}
-図\ref{fig:tekiyou_mortoku}の特性表にある定格電圧の値と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある定格電圧の値と、
 図\ref{fig:tekiyou_csv_wakariyasui}のsignalVoltage1.p.vが持つ値の中で、先頭にある値が同値である。
 したがって、正しく出力していることが確認できる。
 
 \subsubsection{始動電流}
-図\ref{fig:tekiyou_mortoku}の特性表にある始動電流の値と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある始動電流の値と、
 図\ref{fig:tekiyou_csv_wakariyasui}のsignalVoltage1.n.iが持つ値の中の最大値が同値である。
 したがって、正しく出力していることが確認できる。
 
 
 \subsubsection{無負荷電流}
-図\ref{fig:tekiyou_mortoku}の特性表にある無負荷電流の値と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある無負荷電流の値と、
 図\ref{fig:tekiyou_csv_wakariyasui}のsignalVoltage1.n.iが持つ値の中のモータに負荷がかかっていない
 時の値が同値である。
 したがって、正しく出力していることが確認できる。
 \subsubsection{無負荷回転数}
-図\ref{fig:tekiyou_mortoku}の特性表にある無負荷回転数の値と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある無負荷回転数の値と、
 図\ref{fig:tekiyou_csv_wakariyasui}の回転数が持つ値の中の
 モータに負荷がかかっていない時の値が同値である。
 したがって、正しく出力していることが確認できる。
 
 \subsubsection{始動トルク}
-図\ref{fig:tekiyou_mortoku}の特性表にある始動トルクの値と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある始動トルクの値と、
 図\ref{fig:tekiyou_csv_wakariyasui}のinertia1.flange\_a.tauが持つ値の中の最大値が同値である。
 したがって、正しく出力していることが確認できる。
 
 \subsubsection{停動トルク}
-図\ref{fig:tekiyou_mortoku}の特性表にある停動トルクの値と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある停動トルクの値と、
 図\ref{fig:tekiyou_csv_wakariyasui}のinertia1.flange\_a.tauが持つ値の中の最大値が同値である。
 したがって、正しく出力していることが確認できる。
 
 \subsubsection{最大効率}
-図\ref{fig:tekiyou_mortoku}の特性表にある最大効率の値と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある最大効率の値と、
 図\ref{fig:tekiyou_csv_wakariyasui}の効率が持つ値の中の最大値が同値である。
 したがって、正しく出力していることが確認できる。
 
 \subsubsection{定格トルク}
-図\ref{fig:tekiyou_mortoku}の特性表にある定格トルクの値と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある定格トルクの値と、
 図\ref{fig:tekiyou_csv_wakariyasui}のinertia1.flange\_a.tauが持つ値の中の、最大効率を出した時の値が同値である。
 したがって、正しく出力していることが確認できる。
 
 \subsubsection{定格回転数}
-図\ref{fig:tekiyou_mortoku}の特性表にある定格回転数の値と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある定格回転数の値と、
 図\ref{fig:tekiyou_csv_wakariyasui}の回転数が持つ値の中の、最大効率を出した時の値が同値である。
 したがって、正しく出力していることが確認できる。
 
 \subsubsection{定格電流}
-図\ref{fig:tekiyou_mortoku}の特性表にある定格電流と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある定格電流と、
 図\ref{fig:tekiyou_csv_wakariyasui}のsignalVoltage1.n.iが持つ値の中の、
 最大効率を出した時の値が同値である。
 したがって、正しく出力していることが確認できる。
 
 \subsubsection{定格出力}
 % 出力は、\mbox{ トルク $(\mathrm{N \cdot m})$} $\times$ \mbox{角速度 $(\mathrm{rad/s})$} で算出することが可能である。
-図\ref{fig:tekiyou_mortoku}の特性表にある定格出力と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある定格出力と、
 図\ref{fig:tekiyou_csv_wakariyasui}の出力が持つ値の中の、最大効率を出した時の値が同値である。
 したがって、正しく出力していることが確認できる。
 
-% 図\ref{fig:tekiyou_mortoku}の特性表にある出力と、図\ref{fig:tekiyou_csv}の最大効率時のinertia1.flange\_a.tauが持つ値と、inertia1.flange\_a.wが持つ値を(\ref{siki:speed})式に適用した結果が同値である。
+% 図\ref{fig:tekiyou_mortoku}のモータ特性表にある出力と、図\ref{fig:tekiyou_csv}の最大効率時のinertia1.flange\_a.tauが持つ値と、inertia1.flange\_a.wが持つ値を(\ref{siki:speed})式に適用した結果が同値である。
 % よって、正しく出力していることが確認できる。
 \subsubsection{最大回転数}
-図\ref{fig:tekiyou_mortoku}の特性表にある最大回転数と、
+図\ref{fig:tekiyou_mortoku}のモータ特性表にある最大回転数と、
 図\ref{fig:tekiyou_csv_wakariyasui}の回転数が持つ値の中の最大値が同値である。
 したがって、正しく出力していることが確認できる。
 
@@ -166,24 +168,24 @@
 出力した各特性グラフが正しく算出できていることを確認した結果を、以下に示す。
 
 \subsubsection{「トルク $\times$ 電流」グラフ}
-図\ref{fig:tekiyou_mortoku}の「トルク $\times$ 電流」グラフに、
+図\ref{fig:tekiyou_mortoku}の「トルク $\times$ 電流」グラフは、
 図\ref{fig:tekiyou_csv}のinertia1.flange\_a.tauが持つ値と、
-signalVoltage1.n.iが持つ値が存在するので、正しく生成していることが確認できる。
+signalVoltage1.n.iが持つ値をプロットしている。したがって、正しく生成していることが確認できる。
 
 \subsubsection{「トルク $\times$ 回転数」グラフ}
-図\ref{fig:tekiyou_mortoku}の「トルク $\times$ 回転数」グラフに、
+図\ref{fig:tekiyou_mortoku}の「トルク $\times$ 回転数」グラフは、
 図\ref{fig:tekiyou_csv}のinertia1.flange\_a.tauが持つ値と、
-回転数が持つ値が存在するので、正しく生成していることが確認できる。
+回転数が持つ値をプロットしている。したがって、正しく生成していることが確認できる。
 
 \subsubsection{「トルク $\times$ 効率」グラフ}
-図\ref{fig:tekiyou_mortoku}の「トルク $\times$ 効率」グラフに、
+図\ref{fig:tekiyou_mortoku}の「トルク $\times$ 効率」グラフは、
 図\ref{fig:tekiyou_csv}のinertia1.flange\_a.tauが持つ値と、
-効率が持つ値が存在するので、正しく生成していることが確認できる。
+効率が持つ値をプロットしている。したがって、正しく生成していることが確認できる。
 
 \subsubsection{「トルク $\times$ 出力」グラフ}
-図\ref{fig:tekiyou_mortoku}の「トルク $\times$ 出力」グラフに、
+図\ref{fig:tekiyou_mortoku}の「トルク $\times$ 出力」グラフは、
 図\ref{fig:tekiyou_csv}のinertia1.flange\_a.tauが持つ値と、
-出力が持つ値が存在するので、正しく生成していることが確認できる。
+出力が持つ値をプロットしている。したがって、正しく生成していることが確認できる。
 
 
 % \section{ブラシ付きDCモータのModelicaモデルをサブシステムとするモデル}

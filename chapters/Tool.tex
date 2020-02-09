@@ -12,10 +12,9 @@
 モータ特性表自動生成ツールの入力は、OpenModelicaによってモータに関してシミュレーションした結果のcsvファイルである。ここで、現時点のツールは、入力となるcsvファイルは
 次の3つの制約をすべて満たす必要がある。
 \begin{itemize}
-    \item \ref{taioumodel}節でブラシ付きDCモータのモデルを対象とする
-    \item サブシステムを用いたモデルではない
+    \item ブラシ付きDCモータのモデルを対象とする(ブラシ付きDCモータをサブシステムとして用いたモデルは含まない)
     \item モータの回路に印加する電圧値は一定とする
-    \item 0秒からモータに入力を与える
+    \item 0秒からモータに電圧と電流を与える
 \end{itemize}
 
 
@@ -33,8 +32,8 @@
     \end{itemize}
     \item モータ特性表生成部
     \begin{itemize}
-        \item 特性表の生成
-        \item 特性グラフの生成
+        \item 特性表の作成
+        \item 特性グラフの作成
         \item モータ特性表の生成
     \end{itemize}
 \end{itemize}
@@ -45,22 +44,20 @@ csvファイル解析部では、モータ特性表自動生成ツールを実�
 そして、指定したcsvファイルを読み込み、モータ特性表を生成するために必要なデータを取得する。
 以下に、各処理について説明する。
 \subsection{実行コマンドからパラメータの取得}\label{sub:zikkou_tool}
-読み込むcsvファイルを取得するために、モータ特性表自動生成ツールを実行するコマンドの引数に、csvファイル名を指定する。
-モータ特性表自動生成ツールを実行するためのコマンドを、コード\ref{code:zikkou}に示す。
+% 読み込むcsvファイルを取得するために、モータ特性表自動生成ツールを実行するコマンドの引数に、csvファイル名を指定する。
+モータ特性表自動生成ツールを実行するための実行コマンドを、コード\ref{code:zikkou}に示す。
 \begin{figure*}[t]
 	\lstinputlisting[label={code:zikkou}, caption={実行コマンド}]{Image/comand.txt}
 \end{figure*}
 なお、実行コマンドは、ツールの実行ファイルが存在するディレクトリで実行する必要がある。
 
 csvファイル名には、入力とするcsvファイルのパスを含めたファイル名を指定する。
-
 慣性部品のモジュール名には、csvファイル名で指定したcsvファイルの中の、モータ特性表を自動生成したいモータのモデルに含まれる、慣性部品のモジュール名を指定する。
-
 電源部品のモジュール名には、csvファイル名で指定したcsvファイルの中の、モータ特性表を自動生成したいモータのモデルに含まれる、電源部品のモジュール名を指定する。
+慣性部品のモジュール名と電源部品のモジュール名%に、慣性部品と電源部品のモジュール名
+を指定する理由については、\ref{sub:csv_scan}節で述べる。
 
-慣性部品のモジュール名と電源部品のモジュール名に、慣性部品と電源部品のモジュール名を指定する理由については、\ref{sub:csv_scan}節で述べる。
-
-引数を取得するために、実行コマンドの引数を、1次元の配列で保持するsysライブラリのargvを使用する。
+パラメータを取得するために、実行コマンドの引数を、1次元の配列で保持するsysライブラリのargvを使用する。
 以下に、処理の流れを示す。
 
 \begin{enumerate}
@@ -70,7 +67,7 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
     % \item 取得したファイル名の拡張子がcsvでない場合、図\ref{fig:error_file}のエラーを表示し、全体の処理を終了する
     \item argvの2番目の要素から慣性部品のモジュール名を取得する
     \item argvの3番目の要素から電源部品のモジュール名を取得する
-    \item 取得したcsvファイル名、慣性部品のモジュール名、電源部品のモジュール名を用いて\ref{sub:csv_scan}節で述べる処理を実行する
+    \item 取得したcsvファイル名、慣性部品のモジュール名、電源部品のモジュール名を用いて、\ref{sub:csv_scan}節で述べる処理を実行する
 \end{enumerate}
 
 \subsection{csvファイルの読み込み}\label{sub:csv_scan}
@@ -118,7 +115,7 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
 	\label{tab:hensuu}
   \end{table}
 
-モータ特性表自動生成ツールで、csvファイルを読み込むために、表\ref{tab:libr}で挙げたcsvライブラリを使用する。csvライブラリを用いた場合、csvファイルを1行ごとに分けて読み込む。
+モータ特性表自動生成ツールにcsvファイルを読み込むために、表\ref{tab:libr}に示したcsvライブラリを使用する。csvライブラリを用いた場合、csvファイルを1行ごとに分けて読み込む。
 以下に、csvファイルの読み込み処理の流れを示す。
 \begin{enumerate}
     \item 取得したファイル名の拡張子がcsvでない場合、図\ref{fig:error_file}のエラーを表示し、全体の処理を終了する
@@ -126,7 +123,7 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
     \item csvファイルが開けなかった場合、図\ref{fig:error_file}のエラーを表示し、全体の処理を終了する
     \item csvファイルの各行に対して、以下の処理を繰り返す
     \begin{enumerate}
-        \item csvファイルから取得した行の各列の値を保持する配列rowに格納する
+        \item 行の各列の値を保持する配列rowに、csvファイルから取得した値を格納する
         \item csvファイルの1行目を読み込んでいる場合、配列rowの要素数分、以下の処理を繰り返す
             \begin{enumerate}
                 \item 変数名に、コマンドから取得した慣性部品のモジュール名が含まれている場合、以下の処理を行う
@@ -165,19 +162,19 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=10cm,height=1.5cm]{./Image/error_tarinai.png}
-	\caption{引数の数に誤りがあった場合のエラー文の例}
+	\caption{引数の数に誤りがあった場合のエラー文}
 	\label{fig:error_hikisuu}
 \end{figure}
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=12cm,height=1.5cm]{./Image/error_file.png}
-	\caption{第1引数に誤りがあった場合のエラー文の例}
+	\caption{第1引数に誤りがあった場合のエラー文}
 	\label{fig:error_file}
 \end{figure}
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=12cm,height=1.5cm]{./Image/error_comand.png}
-	\caption{慣性部品のモジュール名、電源部品のモジュール名に誤りがあった場合のエラー文の例}
+	\caption{慣性部品のモジュール名または電源部品のモジュール名に誤りがあった場合のエラー文}
 	\label{fig:error_comand}
 \end{figure}
 
@@ -189,7 +186,7 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
 
 \subsection{基礎データの算出}\label{sub:youso_kiso}
 基礎データの算出処理では、回転数、出力、効率の値を持つ配列を、それぞれの値に対して生成する。
-各配列の生成方法を以下に示す。
+各配列の生成方法を、以下に示す。
 
 \subsubsection{回転数}\label{sub:sub:kaiten}
 % 回転数を算出する式は、\ref{sub:csv_scan}節の箇条書き中にある、回転数にて示した式を用いる。
@@ -209,7 +206,7 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
 \subsubsection{効率}\label{sub:sub:kouritu}
 効率を算出する式は、%\ref{sub:csv_scan}節の
 式(\ref{siki:effi})を用いる。
-配列voltageと配列currentを式(\ref{siki:in})に適用し、入力の値を算出する。算出した入力の値と、配列outputの要素を、式(\ref{siki:effi})に適用し、効率の値を格納する配列efficiencyに算出結果を格納する。
+配列voltageと配列currentを、式(\ref{siki:in})に適用し、入力の値を算出する。算出した入力の値と配列outputの要素を、式(\ref{siki:effi})に適用し、効率の値を格納する配列efficiencyに算出結果を格納する。
 
 \subsection{特性表の各要素の算出}\label{sub:youso_mortoku}
 特性表の各要素の算出処理では、\ref{sub:tokuseihyou}節で述べた12個の値を算出する。
@@ -218,18 +215,18 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
 今回、モータ特性表自動生成ツールが対応するモデルでは、電圧値が一定のため、配列voltageの要素はすべて同じ値になる。そこで、配列voltageの先頭の値を定格電圧とする。
 
 \subsubsection{始動電流}\label{sub:sub:sidouden}
-始動電流とは、モータの起動時に流れる大きな電流値である。モータの起動直後は逆起電力が発生するため、モータ・コイル部分にかかる電圧値が下がり、電流値も下がる。
+始動電流とは、モータの起動時に流れる大きな電流値である。モータの起動直後は逆起電力が発生するため、モータ内部のコイル部分にかかる電圧値が下がり、電流値も下がる。
 したがって、配列currentの要素の最大値を始動電流とする。
 
 \subsubsection{無負荷電流}
-無負荷電流とは、モータに負荷がかかっていないときの電流値である。まず、配列torqueの中で、値が0である要素のインデックスXを取得する。
+無負荷電流とは、モータに負荷がかかっていないときの電流値である。まず、配列torqueの中から、値が0である要素のインデックスXを取得する。
 そして、配列currentのインデックスXの要素を無負荷電流とする。
 
 \subsubsection{無負荷回転数}
-無負荷回転数とは、モータに負荷がかかっていないときの回転数の値である。まず、配列torqueの中で、値が0である要素のインデックスXを取得する。
+無負荷回転数とは、モータに負荷がかかっていないときの回転数の値である。まず、配列torqueの中から、値が0である要素のインデックスXを取得する。
 そして、配列speedのインデックスXの要素を無負荷回転数とする。
 
-\subsubsection{始動トルク}\label{sub:sub:teidoutoruku}
+\subsubsection{始動トルク}\label{sub:sub:sidoutoruku}
 始動トルクとは、モータが出しうる最大のトルク値である。したがって、配列torqueの要素の最大値を始動トルクとする。
 
 \subsubsection{停動トルク}\label{sub:sub:teidoutoruku}
@@ -239,23 +236,23 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
 配列efficiencyの要素の最大値を最大効率とする。
 
 \subsubsection{定格トルク}\label{sub:sub:teikakutoruku}
-定格トルクとは、最大効率時のトルク値である。まず、配列efficiencyの中で、最大効率である要素のインデックスYを取得する。
+定格トルクとは、最大効率時のトルク値である。まず、配列efficiencyの中から、最大効率である要素のインデックスYを取得する。
 そして、配列torqueのインデックスYの要素を定格トルクとする。
 % 配列torqueの中で、取得した最大効率のインデックスと同じ位置にある値を定格トルクとする。
 
 \subsubsection{定格回転数}\label{sub:sub:teikakukaiten}
-定格回転数とは、最大効率時の回転数の値である。まず、配列efficiencyの中で、最大効率である要素のインデックスYを取得する。
+定格回転数とは、最大効率時の回転数の値である。まず、配列efficiencyの中から、最大効率である要素のインデックスYを取得する。
 そして、配列speedのインデックスYの要素を定格回転数とする。
 % そして、配列torqueのインデックスYの要素を定格トルクとする。
 % 配列speedの中で、取得した最大効率のインデックスと、同じ位置にある値を定格回転数とする。
 
 \subsubsection{定格電流}\label{sub:sub:teikakuden}
-定格電流とは、最大効率時の電流値である。まず、配列efficiencyの中で、最大効率である要素のインデックスYを取得する。
+定格電流とは、最大効率時の電流値である。まず、配列efficiencyの中から、最大効率である要素のインデックスYを取得する。
 そして、配列currentのインデックスYの要素を定格電流とする。
 % の中で、取得した最大効率のインデックスと、同じ位置にある値を定格電流とする。
 
 \subsubsection{定格出力}\label{sub:sub:teikakusyutu}
-定格出力とは、定格動作点における出力の値である。式(\ref{siki:teikaku})を用いて、定格出力を求める。上記で求めた定格トルクと定格回転数を、式(\ref{siki:teikaku})に代入し、
+定格出力とは、定格動作点における出力の値である。式(\ref{siki:teikaku})を用いて、定格出力を求める。すなわち、上記で求めた定格トルクと定格回転数を、式(\ref{siki:teikaku})に代入し、
 算出した値が定格出力である。
 % 定格出力を算出する式は、%\ref{sub:csv_scan}節の
 % \ref{siki:teikaku}式を用いる。
@@ -265,31 +262,33 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
 配列speedの要素の最大値を最大回転数とする。
 
 \section{モータ特性表生成部}\label{mortoku_sec}
-モータ特性表生成部では、\ref{csv_sec}節と\ref{youso_sec}節で算出した要素を用いて、モータ特性表を自動生成する。まず、特性表を生成し、画像として保存する。
-次に、\ref{sub:tokuseigurahu}節で挙げた4つの特性グラフを生成し、画像として保存する。最後に、特性表の画像と、特性グラフの画像をPDFファイルに書き込むことで、モータ特性表を生成する。
+モータ特性表生成部では、\ref{csv_sec}節と\ref{youso_sec}節で算出した要素を用いて、モータ特性表を自動生成する。まず、特性表を作成し、画像として保存する。
+次に、\ref{sub:tokuseigurahu}節で挙げた4つの特性グラフを作成し、画像として保存する。最後に、特性表の画像と、特性グラフの画像を1つのPDFファイルに書き込むことで、モータ特性表を生成する。
 以下に、各処理について説明する。
 
-\subsection{特性表生成}\label{sub:mortortoku}
+\subsection{特性表作成}\label{sub:mortortoku}
 
-特性表生成処理では、特性表を生成する。以下に、処理の流れを示す。
+特性表作成処理では、特性表を作成する。特性表を作成する処理の流れを、以下に示す。
+また、特性表のテンプレートを、表\ref{tab:wakugumi}に示す。
 \begin{enumerate}
     % \item \ref{sub:youso_mortoku}節で求めたそれぞれの値と、コード\ref{code:name}に示す配列を用いて、特性表を生成する
-    \item \ref{sub:youso_mortoku}節で求めたそれぞれの値を、表\ref{tab:wakugumi}にあてはめて、特性表を生成する
+    \item \ref{sub:youso_mortoku}節で求めたそれぞれの値を、表\ref{tab:wakugumi}に示したテンプレートにあてはめて、特性表を作成する
     % \item 特性表の各要素の名前を持つ配列を作成する(コード\ref{code:name}参照)
     % \item 特性表の要素の配列と、特性表の各要素の名前を持つ配列から、特性表用の配列を作成する
-    \item 生成した表の上部にタイトルとして「モータ特性表」の文字を追加し、画像として保存する。
+    \item 作成した表の上部にタイトルとして「モータ特性表」の文字を追加し、画像として保存する
 \end{enumerate}
 
 \begin{table}[t]
 	\centering
-	\caption{特性表の枠組み}
+	\caption{特性表のテンプレート}
 	\begin{tabular}{|c|c|} \hline
 	  要素 & データ \\ \hline \hline
 	  定格電圧$(\mathrm{V})$ & \ref{sub:youso_mortoku}節で求めた定格電圧の値 \\ \hline
       始動電流 $(\mathrm{mA})$&  \ref{sub:youso_mortoku}節で求めた始動電流の値 \\ \hline
       無負荷電流 $(\mathrm{mA})$&  \ref{sub:youso_mortoku}節で求めた無負荷電流の値\\ \hline
       無負荷回転数$(\mathrm{rpm})$& \ref{sub:youso_mortoku}節で求めた無負荷回転数の値  \\ \hline
-	  始動トルク $(\mathrm{mN \cdot m})$& \ref{sub:youso_mortoku}節で求めた始動トルクの値  \\ \hline
+      始動トルク $(\mathrm{mN \cdot m})$& \ref{sub:youso_mortoku}節で求めた始動トルクの値  \\ \hline
+      停動トルク $(\mathrm{mN \cdot m})$& \ref{sub:youso_mortoku}節で求めた停動トルクの値  \\ \hline     
       最大効率 $(\mathrm{\%})$& \ref{sub:youso_mortoku}節で求めた最大効率の値  \\ \hline
       定格トルク $(\mathrm{mN \cdot m})$& \ref{sub:youso_mortoku}節で求めた定格トルクの値 \\ \hline
 	  定格回転数 $(\mathrm{rpm})$& \ref{sub:youso_mortoku}節で求めた定格回転数の値  \\ \hline
@@ -300,7 +299,7 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
 	\label{tab:wakugumi}
   \end{table}
 
-上記の処理で生成したタイトルと特性表の画像を、図\ref{fig:toku_gazou}に示す。
+上記の処理で作成したタイトルと特性表の画像の例を、図\ref{fig:toku_gazou}に示す。
 % \begin{figure*}[t]
 % 	\lstinputlisting[label={code:name}, caption={特性表を構成する要素名の配列}]{Image/name.txt}
 % \end{figure*}
@@ -309,13 +308,13 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
     \fbox{
 	\includegraphics[width=7cm]{./Image/characteristicTable.png}
     }
-    \caption{タイトルと特性表の画像}
+    \caption{タイトルと特性表の画像の例}
 	\label{fig:toku_gazou}
 \end{figure}
 
-\subsection{特性グラフ生成}\label{sub:toku_gurahu}
-\ref{sub:csv_scan}節、\ref{sub:youso_kiso}節で求めた要素の配列を用いて、特性グラフを生成する。
-処理の流れを以下に示す。
+\subsection{特性グラフ作成}\label{sub:toku_gurahu}
+\ref{sub:csv_scan}節と\ref{sub:youso_kiso}節で求めた要素の配列を用いて、4つの特性グラフを作成する。
+特性グラフを作成する処理の流れを、以下に示す。
 \begin{enumerate}
     % \item 配列torqueに、torque\_defaultを格納する
     % \item 配列currentに、current\_defaultを格納する
@@ -331,39 +330,39 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
     %     \end{enumerate}
     % \item 配列outputに、torque\_defaultと、angularvelocity\_defaultを\ref{siki:out}式に適用した値を格納する
     % \end{enumerate}
-    \item x軸に配列torqueを、y軸に配列currentを指定し、ライブラリmatplotlib(表\ref{tab:libr}参照)を用いてグラフを生成し、画像として保存する
-    \item x軸に配列torqueを、y軸に配列speedを指定し、ライブラリmatplotlib(表\ref{tab:libr}参照)を用いてグラフを生成し、画像として保存する
-    \item x軸に配列torqueを、y軸に配列efficiencyを指定し、ライブラリmatplotlib(表\ref{tab:libr}参照)を用いてグラフを生成し、画像として保存する
-    \item x軸に配列torqueを、y軸に配列outputを指定し、ライブラリmatplotlib(表\ref{tab:libr}参照)を用いてグラフを生成し、画像として保存する
+    \item x軸に配列torqueを、y軸に配列currentを指定し、ライブラリmatplotlib(表\ref{tab:libr}参照)を用いてグラフを作成し、画像として保存する
+    \item x軸に配列torqueを、y軸に配列speedを指定し、ライブラリmatplotlib(表\ref{tab:libr}参照)を用いてグラフを作成し、画像として保存する
+    \item x軸に配列torqueを、y軸に配列efficiencyを指定し、ライブラリmatplotlib(表\ref{tab:libr}参照)を用いてグラフを作成し、画像として保存する
+    \item x軸に配列torqueを、y軸に配列outputを指定し、ライブラリmatplotlib(表\ref{tab:libr}参照)を用いてグラフを作成し、画像として保存する
 \end{enumerate}
-上記の処理で生成した4つの特性グラフを、それぞれ図\ref{fig:current}、図\ref{fig:speed}、図\ref{fig:effi}、図\ref{fig:output}に示す。
+上記の処理で生成した4つの特性グラフの例を、それぞれ図\ref{fig:current}、図\ref{fig:speed}、図\ref{fig:effi}、図\ref{fig:output}に示す。
 
 \begin{figure}[t]
     \begin{tabular}{cc}
         \begin{minipage}{0.45\hsize}
             \centering
             \includegraphics[width=.8\columnwidth]{./Image/current.png}
-            \caption{「トルク $\times$ 電流」グラフ}
+            \caption{「トルク $\times$ 電流」グラフの例}
             \label{fig:current}
         \end{minipage}
         \hfill
         \begin{minipage}{0.45\hsize}
             \centering
             \includegraphics[width=.82\columnwidth]{./Image/speed.png}
-            \caption{「トルク $\times$ 回転数」グラフ}
+            \caption{「トルク $\times$ 回転数」グラフの例}
             \label{fig:speed}
         \end{minipage}\\\\
         \begin{minipage}{0.45\hsize}
             \centering
             \includegraphics[width=.84\columnwidth]{./Image/efficiency.png}
-            \caption{「トルク $\times$ 効率」グラフ}
+            \caption{「トルク $\times$ 効率」グラフの例}
             \label{fig:effi}
         \end{minipage}
         \hfill
         \begin{minipage}{0.45\hsize}
             \centering
             \includegraphics[width=.8\columnwidth]{./Image/output.png}
-            \caption{「トルク $\times$ 出力」グラフ}
+            \caption{「トルク $\times$ 出力」グラフの例}
             \label{fig:output}
         \end{minipage}
     \end{tabular}
@@ -393,14 +392,14 @@ csvファイル名には、入力とするcsvファイルのパスを含めた�
 % 	\label{fig:output}
 % \end{figure}
 \subsection{モータ特性表生成}\label{sub:a}
-\ref{sub:mortortoku}節と、\ref{sub:toku_gurahu}節で生成した合計5つの画像を、ライブラリreportlab(表\ref{tab:libr}参照)を用いて、PDFファイルに書き込み、モータ特性表を生成する。
+\ref{sub:mortortoku}節と\ref{sub:toku_gurahu}節で生成した合計5つの画像を、ライブラリreportlab(表\ref{tab:libr}参照)を用いて、1つのPDFファイルに書き込み、モータ特性表を生成する。
 モータ特性表のPDFファイルのファイル名は、「characteristicTable.pdf」で生成する。同じファイル名のPDFファイルがある場合、上書き保存する。
-この処理で生成するモータ特性表を、図\ref{fig:tokuseihyou}に示す。
+この処理で生成するモータ特性表の例を、図\ref{fig:tokuseihyou}に示す。
 \begin{figure}[t]
 	\centering
 	\fbox{
 	\includegraphics[width=16cm,pagebox=cropbox]{Image/characteristicTable.pdf} 
 	}
-	\caption{モータ特性表}
+	\caption{モータ特性表の例}
 	\label{fig:tokuseihyou}
 \end{figure}
